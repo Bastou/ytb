@@ -2,7 +2,7 @@
 
 A low-tech youtube.
 
-This is mainly an experiment to make the less impactfull video plateform while atempting to do less harm to environnement and to people minds.
+It is mainly an experiment in an attempt to reduce the environmental impact of this type of platform and reduce cognitive dependence.
 
 ## Demo
 
@@ -25,21 +25,7 @@ The app respect the one page one feature principle.
 
 ## Getting Started
 
-### 1. Clone this Repository
-
-```
-git clone https://github.com/11ty/eleventy-base-blog.git my-website
-```
-
-### 2. Navigate to the directory
-
-```
-cd my-website
-```
-
-Specifically have a look at `.eleventy.js` to see if you want to configure any Eleventy options differently.
-
-### 3. Install dependencies
+### 1. Install dependencies
 
 ```
 npm install
@@ -51,9 +37,7 @@ Install eleventy
 npm i -g eleventy
 ```
 
-### 4. Edit \_data/metadata.json
-
-### 5. Run Project
+### 2. Run Project
 
 build and host locally for local development with watcher
 
