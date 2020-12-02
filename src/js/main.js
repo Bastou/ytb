@@ -2,7 +2,7 @@
 import "../css/main.css";
 import search from "./search.js";
 
-const BASE_API_URL = "https://invidio.us/api/v1/"; //search?q="Cyprien école"
+const BASE_API_URL = "https://invidious.xyz/api/v1/"; //search?q="Cyprien école"
 
 // search
 if (document.getElementById("form")) {
