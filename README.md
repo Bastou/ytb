@@ -7,6 +7,7 @@ It is mainly an experiment in an attempt to reduce the environmental impact of t
 ## Demo
 
 [![demo ytb screenshot](./screenshot.jpg "Demo ytb screenshot")](https://ytb.bastiencornier.com)
+[ytb.bastiencornier.com](http://ytb.bastiencornier.com/)
 
 ## Tech
 
