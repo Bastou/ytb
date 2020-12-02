@@ -26,6 +26,7 @@
         <a href="{{ '/' | url }}">{{ metadata.title }}
           <span class="mid">●</span></a>
       </h1>
+{#
       <aside class="s m">
         <nav>
           <ul class="x lsn">
@@ -34,7 +35,7 @@
             <li><a href="https://github.com/Bastou/sstnbl" class="l">Github</a></li>
           </ul>
         </nav>
-      </aside>
+      </aside> #}
     </header>
     <main{% if templateClass %} class="{{ templateClass }}"{% endif %}>
       {{ content | safe }}

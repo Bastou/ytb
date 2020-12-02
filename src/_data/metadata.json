@@ -1,13 +1,13 @@
 {
-  "title": "sstnbl",
-  "shortTitle": "sstnbl",
-  "url": "https://sstnbl.bastiencornier.com/",
-  "description": "Ultra Lightweight & Sustainable web starter base on 11ty that aim to reduce the website footprint from the start.",
+  "title": "ytb",
+  "shortTitle": "ytb",
+  "url": "https://ytn.bastiencornier.com/",
+  "description": "A minimalist youtube",
   "feed": {
-    "subtitle": "Ultra Lightweight & Sustainable web starter base on 11ty that aim to reduce the website footprint from the start.",
+    "subtitle": "A minimalist youtube",
     "filename": "feed.xml",
     "path": "/feed/feed.xml",
-    "id": "https://sstnbl.bastiencornier.com/"
+    "id": "https://ytb.bastiencornier.com/"
   },
   "author": {
     "name": "Bastien Cornier",

@@ -7,6 +7,9 @@ import sourcemaps from "rollup-plugin-sourcemaps";
 
 const ROOT_DIST_PATH = "dist/";
 
+// NOTE : not working
+//const babelCustom = babel({ plugins: ["@babel/plugin-syntax-dynamic-import"] });
+
 const css = cssPorter({ dest: ROOT_DIST_PATH + "/css/main.css" });
 const plugins = [commonjs(), resolve(), babel(), terser(), sourcemaps(), css];
 
