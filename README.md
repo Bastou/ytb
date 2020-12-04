@@ -1,6 +1,6 @@
 # ytb
 
-A low-tech youtube.
+[WIP] A low-tech youtube.
 
 It is mainly an experiment in an attempt to reduce the environmental impact of this type of platform and reduce cognitive dependence.
 
@@ -9,20 +9,20 @@ It is mainly an experiment in an attempt to reduce the environmental impact of t
 [![demo ytb screenshot](./screenshot.jpg "Demo ytb screenshot")](https://ytb.bastiencornier.com)
 [ytb.bastiencornier.com](http://ytb.bastiencornier.com/)
 
-## Tech
-
-- Starter is based on : [sstnbl](https://github.com/Bastou/sstnbl)
-- Vanilla js and css kepts to minimal
-- For the videos I use the api from [invidious instances](https://github.com/iv-org/invidious), I don't host them.
-
 ## Features
 
 The app respect the one page one feature principle.
 
 - Search a video
 - List videos from search query
-- Play video
+- Play video capped at 480p
 - And nothing else
+
+## Tech
+
+- Starter is based on : [sstnbl](https://github.com/Bastou/sstnbl)
+- Vanilla js and css kepts to minimal
+- For the videos I use the api from [invidious instances](https://github.com/iv-org/invidious), I don't host them.
 
 ## Getting Started
 
