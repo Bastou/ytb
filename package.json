@@ -48,5 +48,6 @@
     "rollup-plugin-terser": "^5.2.0"
   },
   "dependencies": {
+    "https": "^1.0.0"
   }
 }

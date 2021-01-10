@@ -3,55 +3,54 @@ import "../css/main.css";
 import search from "./search.js";
 
 // NOTE : sources https://github.com/iv-org/invidious
-const API_BASE_URL = "https://invidious.xyz"; //search?q="Cyprien école"
+const API_BASE_URL_LIST = "https://yewtu.be"; // OR invidious.048596.xyz,
+const API_BASE_URL_VIDEO = "https://invidious.zapashcanon.fr"; // OR //search?q="Cyprien école"
 const API_ENDPOINT_ROOT = "/api/v1/"; //search?q="Cyprien école"
 const apiBaseUrlList = [
-  "https://invidio.us",
-  "https://invidious.xyz",
-  "https://yewtu.be"
+  "https://invidious.tube",
+  "https://invidious.zapashcanon.fr",
+  "https://yewtu.be",
+  "https://invidious.fdn.fr"
 ];
-let defaultBaseUrl = null;
+let defaultBaseUrl = API_BASE_URL_LIST;
+
 
 (function init() {
-  checkApi(apiBaseUrlList, "search?q=cat", 0);
+  //checkApi(apiBaseUrlList, "search?q=cat", 0);
 })();
 
 // TODO: test api url and select first working
 
+// FIXME
 function checkApi(urlList, testEnpoint, urlIndex) {
-  // get array
-  // fetch first
-  // if positive -> set default
-  // if negative -> recall test (recursive)
 
   // check array entry exist at urlIndex
   if(!urlList[urlIndex]) return;
 
+  const currentUrl = urlList[urlIndex];
+
   console.log("-----------");
-  console.log("testing " + urlList[urlIndex], urlIndex);
-  fetch(urlList[urlIndex] + API_ENDPOINT_ROOT + testEnpoint, {
-    mode: 'no-cors' // 'cors' by default
-  }).then(
+  console.log("testing " + currentUrl + API_ENDPOINT_ROOT + testEnpoint, urlIndex);
+  return fetch(currentUrl + API_ENDPOINT_ROOT + testEnpoint).then(
     function (response) {
       var contentType = response.headers.get("content-type");
       console.log({ response });
       if (contentType && contentType.indexOf("application/json") !== -1) {
         return response.json().then(function (data) {
           // if json returned but not data return test next url
-          if(!data || data.length === 0) {
-            checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
-            return;
-          }
-          // traitement du JSON
           console.log({ ok: response.ok, body: data });
-          return { ok: response.ok, body: data };
+          if(!data || data.length === 0) {
+            return checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
+          } 
+          console.log('Working url : ', currentUrl)
+          return currentUrl;
         });
       } else {
         console.log("Oops, there's no JSON!");
         console.log("status", response.status);
         // if no json test next url
-        checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
-        return { status: response.status };
+        return checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
+        //return { status: response.status };
       }
     }
   );
@@ -65,10 +64,16 @@ if (document.getElementById("form")) {
 // list
 if (document.getElementById("list")) {
   const ulNode = document.getElementById("list");
-
-  //const urlParams = new URLSearchParams(window.location.search);
   const searchString = getUrlParam("q");
-  fetchYtb(`search?q="${searchString}"`).then((response) => {
+
+  // checkApi(apiBaseUrlList, `search?q=${searchString}`, 0).then(url => {
+  //   defaultBaseUrl = url;
+  //   fetchYtb(`search?q="${searchString}"`).then((response) => {
+  //     fillList(response.body);
+  //   });
+  // });
+  
+  fetchYtb(`search?q="${searchString}"`, API_BASE_URL_LIST).then((response) => {
     console.log("e", response);
     fillList(response.body);
   });
@@ -88,7 +93,6 @@ if (document.getElementById("list")) {
       list.listLength < maxResults ? list.listLength : maxResults;
     for (let index = 0; index < listLength; index++) {
       const result = list[index];
-      console.log("result", result);
       const liNode = document.createElement("li");
       liNode.classList.add("videoEl");
       liNode.innerHTML = `<a class="videoLink" href="/video?id=${
@@ -113,11 +117,19 @@ if (document.getElementById("list")) {
   }
 }
 
+// Video
 if (document.getElementById("video")) {
   const videoNode = document.getElementById("video");
   const videoWrapperNode = document.getElementById("videoWrapper");
   const videoID = getUrlParam("id");
-  fetchYtb(`videos/${videoID}`).then((response) => {
+  // checkApi(apiBaseUrlList, `videos/${videoID}`, 0).then(url => {
+  //   defaultBaseUrl = url;
+  //   fetchYtb(`videos/${videoID}`).then((response) => {
+  //     console.log("response", response);
+  //     fillVideo(response.body);
+  //   });
+  // });
+  fetchYtb(`videos/${videoID}`, API_BASE_URL_VIDEO).then((response) => {
     console.log("response", response);
     fillVideo(response.body);
   });
@@ -158,8 +170,8 @@ function getUrlParam(paramKey) {
   return new URLSearchParams(window.location.search).get(paramKey);
 }
 
-function fetchYtb(endpoints) {
-  const searchReq = `${API_BASE_URL}${endpoints}`; //search?q="${searchString}"`;
+function fetchYtb(endpoints, baseUrl = API_BASE_URL_LIST) {
+  const searchReq = `${baseUrl}${API_ENDPOINT_ROOT}${endpoints}`; //search?q="${searchString}"`;
   return fetch(searchReq).then(function (response) {
     var contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
