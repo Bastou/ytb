@@ -2,7 +2,60 @@
 import "../css/main.css";
 import search from "./search.js";
 
-const BASE_API_URL = "https://invidious.xyz/api/v1/"; //search?q="Cyprien école"
+// NOTE : sources https://github.com/iv-org/invidious
+const API_BASE_URL = "https://invidious.xyz"; //search?q="Cyprien école"
+const API_ENDPOINT_ROOT = "/api/v1/"; //search?q="Cyprien école"
+const apiBaseUrlList = [
+  "https://invidio.us",
+  "https://invidious.xyz",
+  "https://yewtu.be"
+];
+let defaultBaseUrl = null;
+
+(function init() {
+  checkApi(apiBaseUrlList, "search?q=cat", 0);
+})();
+
+// TODO: test api url and select first working
+
+function checkApi(urlList, testEnpoint, urlIndex) {
+  // get array
+  // fetch first
+  // if positive -> set default
+  // if negative -> recall test (recursive)
+
+  // check array entry exist at urlIndex
+  if(!urlList[urlIndex]) return;
+
+  console.log("-----------");
+  console.log("testing " + urlList[urlIndex], urlIndex);
+  fetch(urlList[urlIndex] + API_ENDPOINT_ROOT + testEnpoint, {
+    mode: 'no-cors' // 'cors' by default
+  }).then(
+    function (response) {
+      var contentType = response.headers.get("content-type");
+      console.log({ response });
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        return response.json().then(function (data) {
+          // if json returned but not data return test next url
+          if(!data || data.length === 0) {
+            checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
+            return;
+          }
+          // traitement du JSON
+          console.log({ ok: response.ok, body: data });
+          return { ok: response.ok, body: data };
+        });
+      } else {
+        console.log("Oops, there's no JSON!");
+        console.log("status", response.status);
+        // if no json test next url
+        checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
+        return { status: response.status };
+      }
+    }
+  );
+}
 
 // search
 if (document.getElementById("form")) {
@@ -106,8 +159,7 @@ function getUrlParam(paramKey) {
 }
 
 function fetchYtb(endpoints) {
-  const searchReq = `${BASE_API_URL}${endpoints}`; //search?q="${searchString}"`;
-  // Do your js and import your stuf here
+  const searchReq = `${API_BASE_URL}${endpoints}`; //search?q="${searchString}"`;
   return fetch(searchReq).then(function (response) {
     var contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
