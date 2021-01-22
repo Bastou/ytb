@@ -3,64 +3,65 @@ import "../css/main.css";
 import search from "./search.js";
 
 // NOTE : sources https://github.com/iv-org/invidious
-const API_BASE_URL_LIST = "https://invidious.xyz"; // OR invidious.048596.xyz OR invidiou.site
-const API_BASE_URL_VIDEO = "https://invidious.048596.xyz"; // OR invidious.048596.xyz OR invidiou.site
+let apiBaseUrlList; // OR invidious.048596.xyz OR invidiou.site
+let apiBaseUrlSingle; // OR invidious.048596.xyz OR invidiou.site
 const API_ENDPOINT_ROOT = "/api/v1/"; //search?q="Cyprien école"
-const apiBaseUrlList = [
-  "https://invidious.048596.xyz",
-  "https://yewtu.be",
-  "https://invidious.fdn.fr",
-  "https://invidious.tube",
-  //"https://invidious.zapashcanon.fr",
-];
-let defaultBaseUrl = API_BASE_URL_LIST;
-let defaultBaseUrlList = API_BASE_URL_LIST; // TODO: register outside
-let defaultBaseUrlSingle = API_BASE_URL_VIDEO; // TODO: register outside
 
-
-(function init() {
-  defaultBaseUrlList = checkApi(apiBaseUrlList, "search?q=cat", 0);
-  defaultBaseUrlSingle = checkApi(apiBaseUrlList, "videos/hY7m5jjJ9mM", 0);
-  console.log({defaultBaseUrlList})
-  console.log({defaultBaseUrlSingle})
-})();
 
 // TODO: test api url and select first working
 
 // FIXME
-function checkApi(urlList, testEnpoint, urlIndex) {
+// function checkApi(urlList, testEnpoint, urlIndex) {
 
-  // check array entry exist at urlIndex
-  if(!urlList[urlIndex]) return;
+//   // check array entry exist at urlIndex
+//   if(!urlList[urlIndex]) return;
 
-  const currentUrl = urlList[urlIndex];
+//   const currentUrl = urlList[urlIndex];
 
-  console.log("-----------");
-  console.log("testing " + currentUrl + API_ENDPOINT_ROOT + testEnpoint, urlIndex);
-  return fetch(currentUrl + API_ENDPOINT_ROOT + testEnpoint).then(
-    function (response) {
-      var contentType = response.headers.get("content-type");
-      console.log({ response });
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        return response.json().then(function (data) {
-          // if json returned but not data return test next url
-          console.log({ ok: response.ok, body: data });
-          if(!data || data.length === 0) {
-            return checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
-          } 
-          console.log('Working url : ', currentUrl)
-          return currentUrl;
-        });
-      } else {
-        console.log("Oops, there's no JSON!");
-        console.log("status", response.status);
-        // if no json test next url
-        return checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
-        //return { status: response.status };
-      }
-    }
-  );
-}
+//   console.log("-----------");
+//   console.log("testing " + currentUrl + API_ENDPOINT_ROOT + testEnpoint, urlIndex);
+//   return fetch(currentUrl + API_ENDPOINT_ROOT + testEnpoint).then(
+//     function (response) {
+//       var contentType = response.headers.get("content-type");
+//       console.log({ response });
+//       if (contentType && contentType.indexOf("application/json") !== -1) {
+//         return response.json().then(function (data) {
+//           // if json returned but not data return test next url
+//           console.log({ ok: response.ok, body: data });
+//           if(!data || data.length === 0) {
+//             return checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
+//           } 
+//           console.log('Working url : ', currentUrl)
+//           return currentUrl;
+//         });
+//       } else {
+//         console.log("Oops, there's no JSON!");
+//         console.log("status", response.status);
+//         // if no json test next url
+//         return checkApi(apiBaseUrlList, testEnpoint, urlIndex+1);
+//         //return { status: response.status };
+//       }
+//     }
+//   );
+// }
+
+fetch('/site-config.json').then(function (response) {
+  var contentType = response.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") !== -1) {
+    return response.json().then(function (data) {
+      // traitement du JSON
+      apiBaseUrlList = data["base_url_list"]; // OR invidious.048596.xyz OR invidiou.site
+      apiBaseUrlSingle = data["base_url_single"]; // OR invidious.048596.xyz OR invidiou.site
+      init();
+    });
+  } else {
+    console.log("Oops, there's no JSON!");
+    return { status: response.status };
+  }
+});
+
+
+function init() {
 
 // search
 if (document.getElementById("form")) {
@@ -79,7 +80,7 @@ if (document.getElementById("list")) {
   //   });
   // });
   
-  fetchYtb(`search?q="${searchString}"`, API_BASE_URL_LIST).then((response) => {
+  fetchYtb(`search?q="${searchString}"`, apiBaseUrlList).then((response) => {
     console.log("e", response);
     fillList(response.body);
   });
@@ -135,7 +136,7 @@ if (document.getElementById("video")) {
   //     fillVideo(response.body);
   //   });
   // });
-  fetchYtb(`videos/${videoID}`, API_BASE_URL_VIDEO).then((response) => {
+  fetchYtb(`videos/${videoID}`, apiBaseUrlSingle).then((response) => {
     console.log("response", response);
     fillVideo(response.body);
   });
@@ -170,13 +171,15 @@ if (document.getElementById("video")) {
 //   }
 // });
 
+}
+
 // HELPERS
 
 function getUrlParam(paramKey) {
   return new URLSearchParams(window.location.search).get(paramKey);
 }
 
-function fetchYtb(endpoints, baseUrl = API_BASE_URL_LIST) {
+function fetchYtb(endpoints, baseUrl = apiBaseUrlList) {
   const searchReq = `${baseUrl}${API_ENDPOINT_ROOT}${endpoints}`; //search?q="${searchString}"`;
   console.log({searchReq})
   return fetch(searchReq).then(function (response) {
