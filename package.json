@@ -12,7 +12,8 @@
     "e11:serve": "eleventy --serve",
     "e11:debug": "DEBUG=* eleventy",
     "start": "concurrently \"yarn js:watch\"  \"yarn e11:serve\"",
-    "build": "eleventy && yarn js:build"
+    "build": "eleventy && yarn js:build",
+    "watch": "concurrently \"yarn js:watch\"  \"yarn e11:watch\""
   },
   "repository": {
     "type": "git",

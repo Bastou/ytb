@@ -3,20 +3,26 @@ import "../css/main.css";
 import search from "./search.js";
 
 // NOTE : sources https://github.com/iv-org/invidious
-const API_BASE_URL_LIST = "https://yewtu.be"; // OR invidious.048596.xyz,
-const API_BASE_URL_VIDEO = "https://invidious.zapashcanon.fr"; // OR //search?q="Cyprien école"
+const API_BASE_URL_LIST = "https://invidious.xyz"; // OR invidious.048596.xyz OR invidiou.site
+const API_BASE_URL_VIDEO = "https://invidious.048596.xyz"; // OR invidious.048596.xyz OR invidiou.site
 const API_ENDPOINT_ROOT = "/api/v1/"; //search?q="Cyprien école"
 const apiBaseUrlList = [
-  "https://invidious.tube",
-  "https://invidious.zapashcanon.fr",
+  "https://invidious.048596.xyz",
   "https://yewtu.be",
-  "https://invidious.fdn.fr"
+  "https://invidious.fdn.fr",
+  "https://invidious.tube",
+  //"https://invidious.zapashcanon.fr",
 ];
 let defaultBaseUrl = API_BASE_URL_LIST;
+let defaultBaseUrlList = API_BASE_URL_LIST; // TODO: register outside
+let defaultBaseUrlSingle = API_BASE_URL_VIDEO; // TODO: register outside
 
 
 (function init() {
-  //checkApi(apiBaseUrlList, "search?q=cat", 0);
+  defaultBaseUrlList = checkApi(apiBaseUrlList, "search?q=cat", 0);
+  defaultBaseUrlSingle = checkApi(apiBaseUrlList, "videos/hY7m5jjJ9mM", 0);
+  console.log({defaultBaseUrlList})
+  console.log({defaultBaseUrlSingle})
 })();
 
 // TODO: test api url and select first working
@@ -172,6 +178,7 @@ function getUrlParam(paramKey) {
 
 function fetchYtb(endpoints, baseUrl = API_BASE_URL_LIST) {
   const searchReq = `${baseUrl}${API_ENDPOINT_ROOT}${endpoints}`; //search?q="${searchString}"`;
+  console.log({searchReq})
   return fetch(searchReq).then(function (response) {
     var contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {

@@ -1,0 +1,10 @@
+{
+  "base_url_list": "https://yewtu.be",
+  "base_url_single": "https://invidious.048596.xyz",
+  "base_urls": [  
+    "https://invidious.fdn.fr",
+    "https://yewtu.be",
+    "https://invidious.tube",
+    "https://invidious.048596.xyz"
+  ]
+}
