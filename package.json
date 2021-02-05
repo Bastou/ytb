@@ -11,7 +11,7 @@
     "e11:watch": "eleventy --watch",
     "e11:serve": "eleventy --serve",
     "e11:debug": "DEBUG=* eleventy",
-    "start": "concurrently \"yarn js:watch\"  \"yarn e11:serve\"",
+    "start": "concurrently \"php -S 0.0.0.0:8080 -t dist/\"  \"yarn watch\"",
     "build": "eleventy && yarn js:build",
     "watch": "concurrently \"yarn js:watch\"  \"yarn e11:watch\""
   },
