@@ -1,10 +1,14 @@
 {
-  "base_url_list": "https://invidious.048596.xyz",
-  "base_url_single": "https://invidious.048596.xyz", 
-  "base_urls": [  
-    "https://invidious.fdn.fr",
+  "base_url_list": "https://ytprivate.com",
+  "base_url_single": "https://ytprivate.com",
+  "base_urls": [
+    "https://ytprivate.com",
+    "https://au.ytprivate.com",
+    "https://invidious.namazso.eu",
+    "https://invidious.snopyta.org",
     "https://yewtu.be",
-    "https://invidious.tube",
-    "https://invidious.048596.xyz"
+    "https://invidiou.site",
+    "https://tube.connect.cafe",
+    "https://vid.puffyan.us"
   ]
 }
