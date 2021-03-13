@@ -121,6 +121,9 @@ h2, h3 {
     margin-right: 10px;
     padding: 0 0.5em;
 }
+#search::placeholder {
+  color: #c3bdaf;
+}
 .searchbutton {
   -webkit-appearance: none;
   background: none;
