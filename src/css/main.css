@@ -27,12 +27,6 @@ a:hover {
   background: #222;
   color: #f5eedc;
 }
-.lsn {
-  list-style: none;
-}
-.s {
-  font-size: 0.8em;
-}
 h1 {
   margin: 0 0 0.6em;
 }
@@ -42,17 +36,8 @@ h1 > a {
 h2 {
   font: 1.3em/1.3 sans-serif;
 }
-.m {
-  margin: 0 0 2.6rem;
-}
 main > * {
   margin: 0 0 1.3rem;
-}
-.img, img {
-  mix-blend-mode: multiply;
-}
-.img {
-  background: #f5eedc;
 }
 img {
   width: 100%;
@@ -64,35 +49,7 @@ h2, h3 {
 .g {
   text-align: center;
 }
-.x {
-  display: flex;
-  margin: 0 -10px;
-  justify-content: space-evenly;
-}
-.l {
-  padding: 12px 10px 12px 10px;
-  display: inline-block;
-}
-.p {
-  image-rendering: crisp-edges;
-}
-.c {
-  display: block;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-.f {
-  text-align: center;
-}
-.b {
-  padding: 0.8em 1.3em;
-}
-.q {
-  margin: 0 0 0.8rem;
-}
-.k {
-  padding: 0 5px;
-}
+
 .mid {
   vertical-align: middle;
 }
@@ -160,13 +117,13 @@ h2, h3 {
     margin-right: 20px;
 }
 
-.videoTitle {
+.vidTitle {
   line-height: 0.9em;
     margin: 0 0 0.3em;
     /* color: #ccc; */
 }
 
-.videoSubtitle {
+.vidSubTitle {
     margin: 0 0 1em;
     color: #676767;
 }
@@ -174,12 +131,14 @@ h2, h3 {
 /* VIDEO */
 #video {
   max-width: 100%;
+  margin: 0 auto;
+  display: block;
 }
 
 #videoWrapper {
   font-size: 1rem;
 }
 
-.videoDetailTitle {
+.vidTitle {
   margin: 0.3em 0 1.3rem;
 }

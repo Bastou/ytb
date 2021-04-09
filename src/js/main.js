@@ -8,6 +8,7 @@ let apiBaseUrlList;
 let apiBaseUrlSingle;
 const API_ENDPOINT_ROOT = "/api/v1/";
 const SITE_CONFIG_PATH = "/site-config.json";
+const VIDEO_RESOLUTIONS = ["360p", "480p", "720p"];
 
 (async function init() {
   const siteConfig = await getSiteConfig(SITE_CONFIG_PATH);
@@ -40,17 +41,16 @@ function createListView() {
   const ulNode = document.getElementById("list");
   const searchString = getUrlParam("q");
 
+  setCursorWaiting();
+
   fetchYtb(`search?q="${searchString}"`, apiBaseUrlList).then((response) => {
-    console.log("e", response);
+    setCursorWaiting(false);
     fillList(response.body);
   });
 
   function fillList(list) {
-    console.log("ulNode", ulNode);
-
     // if empty
     if (list.length === 0) {
-      console.log("no videos");
       ulNode.innerHTML = `<h2>No videos found</h2>`;
       return;
     }
@@ -72,8 +72,8 @@ function createListView() {
       <p>${getDurationString(result.lengthSeconds)}</p>
       </div>
       <div class="info">
-        <h2 class="videoTitle">${result.title}</h2>
-        <p class="videoSubtitle">${result.author} - ${result.publishedText}</p>
+        <h2 class="vidTitle">${result.title}</h2>
+        <p class="vidSubTitle">${result.author} - ${result.publishedText}</p>
         <p class="desc">${result.description}</p>
       </div>
     </a>`;
@@ -87,28 +87,40 @@ function createSingleVideoView() {
   const videoWrapperNode = document.getElementById("videoWrapper");
   const videoID = getUrlParam("id");
 
+  setCursorWaiting();
+
   fetchYtb(`videos/${videoID}`, apiBaseUrlSingle).then((response) => {
-    console.log("response", response);
+    setCursorWaiting(false);
     fillVideo(response.body);
   });
 
   function fillVideo(result) {
-    videoNode.src = result.formatStreams[1]
-      ? result.formatStreams[1].url
-      : result.formatStreams[0].url;
+    const videoData = getVideoDataByResolution(
+      result.formatStreams,
+      VIDEO_RESOLUTIONS
+    );
+    if (!videoData) return console.error("No video data");
+    debugger;
+    console.log(videoData);
+    videoNode.src = videoData.url;
     videoNode.play();
 
     const content = document.createElement("div");
     content.innerHTML = `
-  <h2 class="videoDetailTitle">${result.title}</h2>
-  <p class="videoSubtitle">${result.author} - ${result.publishedText}</p>
+  <h2 class="vidTitle">${result.title}</h2>
+  <p class="vidSubTitle">${result.author} - ${result.publishedText}</p>
   <p class="desc">${result.descriptionHtml}</p>`;
     videoWrapperNode.appendChild(content);
+  }
+
+  function getVideoDataByResolution(videosData, video_resolutions) {
+    return videosData.filter((videoData) =>
+      video_resolutions.includes(videoData.resolution)
+    )[0];
   }
 }
 
 // -- HELPERS
-
 function getSiteConfig(path) {
   return fetch("/site-config.json").then(function (response) {
     var contentType = response.headers.get("content-type");
@@ -129,7 +141,7 @@ function getUrlParam(paramKey) {
 
 function fetchYtb(endpoints, baseUrl = apiBaseUrlList) {
   const searchReq = `${baseUrl}${API_ENDPOINT_ROOT}${endpoints}`;
-  console.log({ searchReq });
+
   return fetch(searchReq).then(function (response) {
     var contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -137,17 +149,19 @@ function fetchYtb(endpoints, baseUrl = apiBaseUrlList) {
         return { ok: response.ok, body: data };
       });
     } else {
-      console.log("Oops, there's no JSON!");
+      console.error("Oops, there's no JSON!");
       return { status: response.status };
     }
   });
 }
 
 function getDurationString(seconds) {
-  console.log(seconds);
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  console.log("minutes", minutes);
-  console.log("remainingSeconds", remainingSeconds);
+
   return (minutes > 0 ? minutes + ":" : "") + remainingSeconds;
+}
+
+function setCursorWaiting(value = true) {
+  document.body.style.cursor = value ? "wait" : "";
 }
