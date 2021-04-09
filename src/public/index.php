@@ -1,13 +1,13 @@
 <?php
 
-// include app
-include('./app/app.php');
+// Get base config string
+$baseConfigString = file_get_contents("./site-config.json");
 
 // Echo index 
-$html= file_get_contents('./home/index.html');
+$html = file_get_contents('./home/index.html');
 echo $html;
 
 ?>
 <script>
-    window.__siteConfig = <?= json_encode($newConfig) ?>
+    window.__siteConfig = <?= $baseConfigString ?>
 </script>

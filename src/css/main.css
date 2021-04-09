@@ -10,7 +10,7 @@ html, body {
 body {
   margin: 0 auto;
   padding: calc(50vh - 160px / 2) 3vh 0;
-  max-width: 50ch;
+  max-width: 70ch;
   font: 20px/1.6 sans-serif;
   background: #f5eedc;
   display: flex;
@@ -109,9 +109,10 @@ h2, h3 {
 /* Form */
 #form {
   display: flex;
+  max-width: 50ch;
+  margin: 0 auto;
 }
 #search {
-  width: 100%;
     height: 2em;
     font-size: 1.2em;
     background: transparent;
@@ -138,6 +139,8 @@ h2, h3 {
 
 #list {
     list-style-type: none;
+    max-width: 50ch;
+    margin: 0 auto;
 }
 
 .videoLink {

@@ -1,13 +1,13 @@
 <?php
 
-define("DEBUG", false);
+define("DEBUG", true);
 define("API_BASE", "/api/v1/");
 define("API_LIST_TEST_ENDPOINT", "search?q=cat");
 define("API_SINGLE_TEST_ENDPOINT", "videos/hY7m5jjJ9mM");
 
 // Get local config file
 // https://instances.invidio.us/
-$baseConfigString = file_get_contents("./site-config.json");
+$baseConfigString = file_get_contents("site-config.json");
 $baseConfig = json_decode($baseConfigString, true);
 
 $newConfig = $baseConfig;
@@ -108,15 +108,17 @@ function testApiUrls($urlList, $endPoint, $index)
 
 function writeApiConfig($config)
 {
-    $fp = fopen('site-config.json', 'w');
+    $config['updated_date'] = date("D M j G:i:s T Y");
+    $fp = fopen('./site-config.json', 'w');
     fwrite($fp, json_encode($config));
     fclose($fp);
 }
 
-function debugLog($content)
+function debugLog($content, $after = '')
 {
     if (!DEBUG) return;
 
     echo $content;
     echo "<br />";
+    echo $after;
 }
