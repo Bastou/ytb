@@ -10,7 +10,7 @@ html, body {
 body {
   margin: 0 auto;
   padding: calc(50vh - 160px / 2) 3vh 0;
-  max-width: 70ch;
+  max-width: 61ch;
   font: 20px/1.6 sans-serif;
   background: #f5eedc;
   display: flex;
@@ -140,5 +140,5 @@ h2, h3 {
 }
 
 .vidTitle {
-  margin: 0.3em 0 1.3rem;
+  margin: 1.3rem 0;
 }

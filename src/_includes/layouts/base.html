@@ -9,8 +9,7 @@
     <meta name="author" content="{{ metadata.author.name }}">
     <link rel="alternate" href="{{ metadata.feed.path | url }}" type="application/atom+xml" title="{{ metadata.title }}">
     <link rel="manifest" href="{{ '/manifest.webmanifest' | url }}" crossorigin="use-credentials">
-    <link rel="icon" href="data:,">
-    <link rel="apple-touch-icon" href="{{ '/img/icons/icon-192.png' | url }}">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGVsbGlwc2Ugcnk9IjMuNTIiIHJ4PSIzLjUyIiBjeT0iNSIgY3g9IjUiIG9wYWNpdHk9InVuZGVmaW5lZCIvPjwvc3ZnPg==">
     <link rel="stylesheet" href="{{ '/css/main.min.css' | url }}">
     <meta name="theme-color" content="#222222"/>
     <script>
@@ -24,7 +23,7 @@
     <header class="g">
       <h1>
         <a href="{{ '/' | url }}">{{ metadata.title }}
-          <span class="mid">●</span></a>
+          <span class="mid">&#9679;</span></a>
       </h1>
     </header>
     <main{% if templateClass %} class="{{ templateClass }}"{% endif %}>

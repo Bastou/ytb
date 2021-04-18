@@ -1,12 +1,19 @@
 // Import css modules
 import "../css/main.css";
-import initSearchView from "./views/search.js";
+import initSearchView from "./views/search";
+import {
+  getUrlParam,
+  getSiteConfig,
+  setCursorWaiting,
+  fetchYtb,
+  getDurationString
+} from "./helpers";
 
 // NOTE : sources https://github.com/iv-org/invidious
 
 let apiBaseUrlList;
 let apiBaseUrlSingle;
-const API_ENDPOINT_ROOT = "/api/v1/";
+const API_ENDPOINT_ROOT = "/api/v1";
 const SITE_CONFIG_PATH = "/site-config.json";
 const VIDEO_RESOLUTIONS = ["360p", "480p", "720p"];
 
@@ -43,7 +50,7 @@ function createListView() {
 
   setCursorWaiting();
 
-  fetchYtb(`search?q="${searchString}"`, apiBaseUrlList).then((response) => {
+  fetchYtb(`${API_ENDPOINT_ROOT}/search?q="${searchString}"`, apiBaseUrlList).then((response) => {
     setCursorWaiting(false);
     fillList(response.body);
   });
@@ -89,7 +96,7 @@ function createSingleVideoView() {
 
   setCursorWaiting();
 
-  fetchYtb(`videos/${videoID}`, apiBaseUrlSingle).then((response) => {
+  fetchYtb(`${API_ENDPOINT_ROOT}/videos/${videoID}`, apiBaseUrlSingle).then((response) => {
     setCursorWaiting(false);
     fillVideo(response.body);
   });
@@ -100,8 +107,6 @@ function createSingleVideoView() {
       VIDEO_RESOLUTIONS
     );
     if (!videoData) return console.error("No video data");
-    debugger;
-    console.log(videoData);
     videoNode.src = videoData.url;
     videoNode.play();
 
@@ -112,56 +117,10 @@ function createSingleVideoView() {
   <p class="desc">${result.descriptionHtml}</p>`;
     videoWrapperNode.appendChild(content);
   }
-
-  function getVideoDataByResolution(videosData, video_resolutions) {
-    return videosData.filter((videoData) =>
-      video_resolutions.includes(videoData.resolution)
-    )[0];
-  }
 }
 
-// -- HELPERS
-function getSiteConfig(path) {
-  return fetch("/site-config.json").then(function (response) {
-    var contentType = response.headers.get("content-type");
-    if (contentType && contentType.indexOf("application/json") !== -1) {
-      return response.json();
-    } else {
-      console.error(
-        "Oops, there's no JSON!, error status : " + response.status
-      );
-      return { status: response.status };
-    }
-  });
-}
-
-function getUrlParam(paramKey) {
-  return new URLSearchParams(window.location.search).get(paramKey);
-}
-
-function fetchYtb(endpoints, baseUrl = apiBaseUrlList) {
-  const searchReq = `${baseUrl}${API_ENDPOINT_ROOT}${endpoints}`;
-
-  return fetch(searchReq).then(function (response) {
-    var contentType = response.headers.get("content-type");
-    if (contentType && contentType.indexOf("application/json") !== -1) {
-      return response.json().then(function (data) {
-        return { ok: response.ok, body: data };
-      });
-    } else {
-      console.error("Oops, there's no JSON!");
-      return { status: response.status };
-    }
-  });
-}
-
-function getDurationString(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  return (minutes > 0 ? minutes + ":" : "") + remainingSeconds;
-}
-
-function setCursorWaiting(value = true) {
-  document.body.style.cursor = value ? "wait" : "";
+function getVideoDataByResolution(videosData, video_resolutions) {
+  return videosData.filter((videoData) =>
+    video_resolutions.includes(videoData.resolution)
+  )[0];
 }
