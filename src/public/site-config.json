@@ -2,6 +2,7 @@
   "base_url_list": "https://ytprivate.com",
   "base_url_single": "https://ytprivate.com",
   "base_urls": [
+    "https://invidious.snopyta.org", 
     "https://ytprivate.com",
     "https://au.ytprivate.com",
     "https://invidious.namazso.eu",

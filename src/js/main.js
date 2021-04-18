@@ -6,41 +6,66 @@ import {
   getSiteConfig,
   setCursorWaiting,
   fetchYtb,
-  getDurationString
+  getDurationString,
 } from "./helpers";
 
+// CONSTANTS
 // NOTE : sources https://github.com/iv-org/invidious
-
-let apiBaseUrlList;
-let apiBaseUrlSingle;
 const API_ENDPOINT_ROOT = "/api/v1";
 const SITE_CONFIG_PATH = "/site-config.json";
 const VIDEO_RESOLUTIONS = ["360p", "480p", "720p"];
+const SITE_UPDATE_CONFIG_ENDPOINT = "/app/generate-api-config.php";
+const EViewTypes = Object.freeze({ SEARCH: 1, LIST: 2, SINGLE: 3 });
+
+const viewTypeNodes = new Map([
+  [EViewTypes.SEARCH, "form"],
+  [EViewTypes.LIST, "list"],
+  [EViewTypes.SINGLE, "video"],
+]);
+
+let apiBaseUrlList;
+let apiBaseUrlSingle;
 
 (async function init() {
   const siteConfig = await getSiteConfig(SITE_CONFIG_PATH);
   apiBaseUrlList = siteConfig["base_url_list"];
   apiBaseUrlSingle = siteConfig["base_url_single"];
   initViews();
+
+  // call update api config from backend when home
+  if (isViewType(EViewTypes.SEARCH)) {
+    await fetch(
+      window.location.origin + SITE_UPDATE_CONFIG_ENDPOINT
+    );
+  }
 })();
 
-// -- VIEWS
+// ------------------------------------------------------------ VIEWS
 
 function initViews() {
   // search
-  if (document.getElementById("form")) {
+  if (isViewType(EViewTypes.SEARCH)) {
     initSearchView();
   }
 
   // list
-  if (document.getElementById("list")) {
+  if (isViewType(EViewTypes.LIST)) {
     createListView();
   }
 
-  // Video
-  if (document.getElementById("video")) {
+  // Single Video
+  if (isViewType(EViewTypes.SINGLE)) {
     createSingleVideoView();
   }
+}
+
+/**
+ *
+ * @param {EViewTypes} viewType
+ * @returns
+ */
+function isViewType(viewType) {
+  return document.getElementById(viewTypeNodes.get(viewType));
 }
 
 // TODO : make separate module
@@ -50,7 +75,10 @@ function createListView() {
 
   setCursorWaiting();
 
-  fetchYtb(`${API_ENDPOINT_ROOT}/search?q="${searchString}"`, apiBaseUrlList).then((response) => {
+  fetchYtb(
+    `${API_ENDPOINT_ROOT}/search?q="${searchString}"`,
+    apiBaseUrlList
+  ).then((response) => {
     setCursorWaiting(false);
     fillList(response.body);
   });
@@ -75,7 +103,7 @@ function createListView() {
       <div class="thumb">
       <img src="${
         result.videoThumbnails.find((a) => a.quality === "start").url
-      }" />
+      }" width="120"  height="90" alt="preview for ${result.title}" />
       <p>${getDurationString(result.lengthSeconds)}</p>
       </div>
       <div class="info">
@@ -96,10 +124,12 @@ function createSingleVideoView() {
 
   setCursorWaiting();
 
-  fetchYtb(`${API_ENDPOINT_ROOT}/videos/${videoID}`, apiBaseUrlSingle).then((response) => {
-    setCursorWaiting(false);
-    fillVideo(response.body);
-  });
+  fetchYtb(`${API_ENDPOINT_ROOT}/videos/${videoID}`, apiBaseUrlSingle).then(
+    (response) => {
+      setCursorWaiting(false);
+      fillVideo(response.body);
+    }
+  );
 
   function fillVideo(result) {
     const videoData = getVideoDataByResolution(
