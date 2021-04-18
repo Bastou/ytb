@@ -9,7 +9,7 @@
     <meta name="author" content="{{ metadata.author.name }}">
     <link rel="alternate" href="{{ metadata.feed.path | url }}" type="application/atom+xml" title="{{ metadata.title }}">
     <link rel="manifest" href="{{ '/manifest.webmanifest' | url }}" crossorigin="use-credentials">
-    <link rel="icon" href="data:,">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGVsbGlwc2Ugcnk9IjMuNTIiIHJ4PSIzLjUyIiBjeT0iNSIgY3g9IjUiIG9wYWNpdHk9InVuZGVmaW5lZCIvPjwvc3ZnPg==">
     <link rel="apple-touch-icon" href="{{ '/img/icons/icon-192.png' | url }}">
     <link rel="stylesheet" href="{{ '/css/main.min.css' | url }}">
     <meta name="theme-color" content="#222222"/>
@@ -24,22 +24,16 @@
     <header class="g">
       <h1>
         <a href="{{ '/' | url }}">{{ metadata.title }}
-          <span class="mid">●</span></a>
+          <span class="mid">&#9679;</span></a>
       </h1>
-{#
-      <aside class="s m">
-        <nav>
-          <ul class="x lsn">
-            {{ nav.default((collections.all | eleventyNavigation), page, showDate=true) }}
-            <li><a href="{{ '/sustainable-checklist.html' | url }}" class="l">Checklist</a></li>
-            <li><a href="https://github.com/Bastou/sstnbl" class="l">Github</a></li>
-          </ul>
-        </nav>
-      </aside> #}
     </header>
     <main{% if templateClass %} class="{{ templateClass }}"{% endif %}>
       {{ content | safe }}
     </main>
+    <div class="ei sm">
+      <a href="https://www.websitecarbon.com/website/ytb-bastiencornier-com/" rel="noopener" target="_blank">0.026 gCO2e</a>
+      <a href="/about">?</a>
+    </div>
     <script async type="module" src="{{ '/js/main.min.js' | url }}"></script>
     <script async nomodule src="{{ '/js/main.iife.min.js' | url }}"></script>
   </body>

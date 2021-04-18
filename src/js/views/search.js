@@ -8,7 +8,6 @@ export default function () {
   function submit(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('in serach')
 
     window.location = "/results?q=" + searchNode.value;
 
