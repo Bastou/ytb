@@ -69,10 +69,9 @@ h2, h3 {
   padding: .6em .6em;
 }
 .ei a:last-child {
-  padding: .6em 1.4em .6em .6em;
-  margin-right: -0.8em;
+  padding: .8em;
+  margin-right: 0;
 }
-
 
 /* Form */
 #form {
