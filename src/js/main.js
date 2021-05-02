@@ -5,8 +5,9 @@ import {
   getUrlParam,
   getSiteConfig,
   setCursorWaiting,
-  fetchYtb,
+  fetchMultipleYtb,
   getDurationString,
+  fetchSingleYtb,
 } from "./helpers";
 
 // CONSTANTS
@@ -23,20 +24,21 @@ const viewTypeNodes = new Map([
   [EViewTypes.SINGLE, "video"],
 ]);
 
-let apiBaseUrlList;
-let apiBaseUrlSingle;
+let apiBaseUrlsList = [];
+let apiBaseUrlsSingle = [];
 
 (async function init() {
   const siteConfig = await getSiteConfig(SITE_CONFIG_PATH);
-  apiBaseUrlList = siteConfig["base_url_list"];
-  apiBaseUrlSingle = siteConfig["base_url_single"];
+  apiBaseUrlsList = [siteConfig["base_url_list"], siteConfig["base_urls"][0]];
+  apiBaseUrlsSingle = [
+    siteConfig["base_url_single"],
+    siteConfig["base_urls"][0],
+  ];
   initViews();
 
   // call update api config from backend when home
   if (isViewType(EViewTypes.SEARCH)) {
-    await fetch(
-      window.location.origin + SITE_UPDATE_CONFIG_ENDPOINT
-    );
+    navigator.sendBeacon(window.location.origin + SITE_UPDATE_CONFIG_ENDPOINT);
   }
 })();
 
@@ -75,18 +77,22 @@ function createListView() {
 
   setCursorWaiting();
 
-  fetchYtb(
-    `${API_ENDPOINT_ROOT}/search?q="${searchString}"`,
-    apiBaseUrlList
-  ).then((response) => {
-    setCursorWaiting(false);
-    fillList(response.body);
-  });
+  try {
+    fetchMultipleYtb(
+      `${API_ENDPOINT_ROOT}/search?q="${searchString}"`,
+      apiBaseUrlsList
+    ).then((response) => {
+      setCursorWaiting(false);
+      fillList(response.body);
+    });
+  } catch (error) {
+    fillList([]);
+  }
 
   function fillList(list) {
     // if empty
     if (list.length === 0) {
-      ulNode.innerHTML = `<h2>No videos found</h2>`;
+      ulNode.innerHTML = `<h2>No videos found. Try to reload.</h2>`;
       return;
     }
 
@@ -117,21 +123,27 @@ function createListView() {
   }
 }
 
-function createSingleVideoView() {
+function createSingleVideoView(iterationCount = 0) {
+  if (iterationCount > 1) return;
   const videoNode = document.getElementById("video");
   const videoWrapperNode = document.getElementById("videoWrapper");
   const videoID = getUrlParam("id");
+  // reverse on odd count
+  const baseApiUrls =
+    iterationCount % 2 === 0 ? apiBaseUrlsSingle : apiBaseUrlsSingle.reverse();
 
   setCursorWaiting();
 
-  fetchYtb(`${API_ENDPOINT_ROOT}/videos/${videoID}`, apiBaseUrlSingle).then(
-    (response) => {
-      setCursorWaiting(false);
-      fillVideo(response.body);
-    }
-  );
+  fetchMultipleYtb(
+    `${API_ENDPOINT_ROOT}/videos/${videoID}`,
+    baseApiUrls
+  ).then((response) => {
+    setCursorWaiting(false);
+    fillVideo(response.body);
+  });
 
   function fillVideo(result) {
+    const content = document.createElement("div");
     const videoData = getVideoDataByResolution(
       result.formatStreams,
       VIDEO_RESOLUTIONS
@@ -139,8 +151,12 @@ function createSingleVideoView() {
     if (!videoData) return console.error("No video data");
     videoNode.src = videoData.url;
     videoNode.play();
+    videoNode.onerror = () => {
+      content.innerHTML = `<p>Video not found</p>`;
+      // Retry only a second time to catch with a different api
+      createSingleVideoView(iterationCount + 1);
+    };
 
-    const content = document.createElement("div");
     content.innerHTML = `
   <h2 class="vidTitle">${result.title}</h2>
   <p class="vidSubTitle">${result.author} - ${result.publishedText}</p>

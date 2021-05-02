@@ -1,5 +1,4 @@
 export default function () {
-  console.log("search module loaded");
   const formNode = document.getElementById("form");
   const searchNode = document.getElementById("search");
 

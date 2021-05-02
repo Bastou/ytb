@@ -2,14 +2,16 @@
   "base_url_list": "https://ytprivate.com",
   "base_url_single": "https://ytprivate.com",
   "base_urls": [
-    "https://invidious.snopyta.org", 
-    "https://ytprivate.com",
-    "https://au.ytprivate.com",
     "https://invidious.namazso.eu",
+    "https://ytprivate.com",
     "https://invidious.snopyta.org",
-    "https://yewtu.be",
+    "https://au.ytprivate.com",
+    "https://invidious.tube",
+    "https://vid.puffyan.us",
+    "https://inv.skyn3t.in",
+    "https://invidious.himiko.cloud",
     "https://invidiou.site",
-    "https://tube.connect.cafe",
-    "https://vid.puffyan.us"
+    "https://tube.incognet.io",
+    "https://tube.connect.cafe"
   ]
 }
