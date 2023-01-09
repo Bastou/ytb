@@ -38,7 +38,7 @@
     "concurrently": "^5.1.0",
     "eleventy-plugin-local-respimg": "^0.2.0",
     "eleventy-plugin-pwa": "^1.0.8",
-    "luxon": "^1.21.3",
+    "luxon": "^1.28.1",
     "markdown-it": "^8.4.2",
     "rollup": "^1.32.0",
     "rollup-plugin-babel": "^4.3.3",
