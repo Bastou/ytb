@@ -40,7 +40,7 @@
     "eleventy-plugin-pwa": "^1.0.8",
     "luxon": "^1.21.3",
     "markdown-it": "^8.4.2",
-    "rollup": "^1.32.0",
+    "rollup": "^2.79.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-css-porter": "^1.0.2",
