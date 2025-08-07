@@ -1,17 +1,22 @@
 {
-  "base_url_list": "https://ytprivate.com",
-  "base_url_single": "https://ytprivate.com",
+  "base_url_list": "https://nyc1.iv.ggtyler.dev",
+  "base_url_single": "https://nyc1.iv.ggtyler.dev",
+
   "base_urls": [
-    "https://invidious.namazso.eu",
-    "https://ytprivate.com",
+    "https://nyc1.iv.ggtyler.dev",
+    "https://lekker.gay",
+    "https://sklempin.ddns.net:9001"
+  ],
+  "obsolete_urls": [
     "https://invidious.snopyta.org",
-    "https://au.ytprivate.com",
     "https://invidious.tube",
     "https://vid.puffyan.us",
     "https://inv.skyn3t.in",
     "https://invidious.himiko.cloud",
     "https://invidiou.site",
     "https://tube.incognet.io",
-    "https://tube.connect.cafe"
+    "https://tube.connect.cafe",
+    "https://invidious.namazso.eu",
+    "https://ytprivate.com"
   ]
 }
