@@ -1,11 +1,11 @@
 {
-  "base_url_list": "https://nyc1.iv.ggtyler.dev",
-  "base_url_single": "https://nyc1.iv.ggtyler.dev",
+  "base_url_list": "https://lekker.gay",
+  "base_url_single": "https://sklempin.ddns.net:9001",
 
   "base_urls": [
-    "https://nyc1.iv.ggtyler.dev",
     "https://lekker.gay",
-    "https://sklempin.ddns.net:9001"
+    "https://sklempin.ddns.net:9001",
+    "https://nyc1.iv.ggtyler.dev"
   ],
   "obsolete_urls": [
     "https://invidious.snopyta.org",
